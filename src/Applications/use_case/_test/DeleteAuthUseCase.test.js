@@ -30,32 +30,33 @@ describe('DeleteAuthUseCase', () => {
 		)
 	})
 
-	it('should orchestrating the delete auth action correctly', async () => {
-		// Arrange
-		const useCasePayload = {
-			refreshToken: 'refreshToken',
-		}
-		const mockAuthRepository = new AuthRepository()
-		mockAuthRepository.checkAuthR = jest.fn(() =>
-			Promise.resolve()
-		)
-		mockAuthRepository.deleteToken = jest.fn(() =>
-			Promise.resolve()
-		)
+	it("should orchestrating the delete auth action correctly", async () => {
+    // Arrange
+    const useCasePayload = {
+      refreshToken: "refreshToken",
+    };
+    const mockAuthRepository = new AuthRepository();
 
-		const deleteAuthUseCase = new DeleteAuthUseCase({
-			authRepository: mockAuthRepository,
-		})
+    // Mock the necessary methods
+    mockAuthRepository.checkTokenAvailability = jest.fn(() =>
+      Promise.resolve()
+    );
+    mockAuthRepository.deleteToken = jest.fn(() => Promise.resolve());
 
-		// Act
-		await deleteAuthUseCase.execute(useCasePayload)
+    const deleteAuthUseCase = new DeleteAuthUseCase({
+      authRepository: mockAuthRepository,
+    });
 
-		// Assert
-		expect(
-			mockAuthRepository.checkAuthR
-		).toHaveBeenCalledWith(useCasePayload.refreshToken)
-		expect(mockAuthRepository.deleteToken).toHaveBeenCalledWith(
-			useCasePayload.refreshToken
-		)
-	})
+    // Act
+    await deleteAuthUseCase.execute(useCasePayload);
+
+    // Assert
+    expect(mockAuthRepository.checkTokenAvailability).toHaveBeenCalledWith(
+      useCasePayload.refreshToken
+    );
+    expect(mockAuthRepository.deleteToken).toHaveBeenCalledWith(
+      useCasePayload.refreshToken
+    );
+  });
+
 })
