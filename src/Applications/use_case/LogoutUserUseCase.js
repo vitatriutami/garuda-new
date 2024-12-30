@@ -6,7 +6,7 @@ class LogoutUserUseCase {
 	async execute(useCasePayload) {
 		this._validatePayload(useCasePayload)
 		const { refreshToken } = useCasePayload
-		await this._authRepository.checkAvailabilityToken(
+		await this._authRepository.checkTokenAvailability(
 			refreshToken
 		)
 		await this._authRepository.deleteToken(refreshToken)

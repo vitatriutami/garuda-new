@@ -12,7 +12,7 @@ describe('AuthRepository interface', () => {
 			'AUTH_REPOSITORY.METHOD_NOT_IMPLEMENTED'
 		)
 		await expect(
-			authRepository.checkAvailabilityToken('')
+			authRepository.checkTokenAvailability('')
 		).rejects.toThrowError(
 			'AUTH_REPOSITORY.METHOD_NOT_IMPLEMENTED'
 		)

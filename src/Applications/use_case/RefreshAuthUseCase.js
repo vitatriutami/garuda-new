@@ -9,7 +9,7 @@ class RefreshAuthUseCase {
 		const { refreshToken } = useCasePayload
 
 		await this._authTokenManager.verifyRefreshToken(refreshToken)
-		await this._authRepository.checkAvailabilityToken(
+		await this._authRepository.checkTokenAvailability(
 			refreshToken
 		)
 

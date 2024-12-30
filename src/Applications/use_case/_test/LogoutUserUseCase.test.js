@@ -36,7 +36,7 @@ describe('LogoutUserUseCase', () => {
 			refreshToken: 'refreshToken',
 		}
 		const mockAuthRepository = new AuthRepository()
-		mockAuthRepository.checkAvailabilityToken = jest.fn(() =>
+		mockAuthRepository.checkTokenAvailability = jest.fn(() =>
 			Promise.resolve()
 		)
 		mockAuthRepository.deleteToken = jest.fn(() =>
@@ -52,7 +52,7 @@ describe('LogoutUserUseCase', () => {
 
 		// Assert
 		expect(
-			mockAuthRepository.checkAvailabilityToken
+			mockAuthRepository.checkTokenAvailability
 		).toHaveBeenCalledWith(useCasePayload.refreshToken)
 		expect(mockAuthRepository.deleteToken).toHaveBeenCalledWith(
 			useCasePayload.refreshToken

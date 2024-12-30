@@ -18,7 +18,7 @@ class UsersHandler {
       .response({
         status: "success",
         data: {
-          createdUser: newUser,
+          addedUser: newUser,
         },
       })
       .code(201);

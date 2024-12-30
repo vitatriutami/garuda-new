@@ -132,14 +132,14 @@ describe('DomainErrorTranslator', () => {
 
 		expect(
 			DomainErrorTranslator.translate(
-				new Error('PUT_LIKE.NOT_CONTAIN_NEEDED_PROPERTY')
+				new Error('ADD_LIKE.NOT_CONTAIN_NEEDED_PROPERTY')
 			)
 		).toStrictEqual(
 			new InvariantError('harus mengirimkan parameter dengan benar')
 		)
 		expect(
 			DomainErrorTranslator.translate(
-				new Error('PUT_LIKE.NOT_MEET_DATA_TYPE_SPECIFICATION')
+				new Error('ADD_LIKE.NOT_MEET_DATA_TYPE_SPECIFICATION')
 			)
 		).toStrictEqual(
 			new InvariantError('setiap parameter harus bertipe string')
