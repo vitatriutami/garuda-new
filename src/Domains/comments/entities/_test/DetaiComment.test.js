@@ -1,6 +1,6 @@
-const CommentDetail = require("../DetailComment");
+const DetailComment = require("../DetailComment");
 
-describe("a CommentDetail entities", () => {
+describe("a DetailComment entities", () => {
   it("should throw error when payload did not contain needed property", () => {
     // Arrange
     const payload = {
@@ -10,7 +10,7 @@ describe("a CommentDetail entities", () => {
     };
 
     // Action and Assert
-    expect(() => new CommentDetail(payload)).toThrowError(
+    expect(() => new DetailComment(payload)).toThrowError(
       "ADD_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });
@@ -27,12 +27,12 @@ describe("a CommentDetail entities", () => {
     };
 
     // Action and Assert
-    expect(() => new CommentDetail(payload)).toThrowError(
+    expect(() => new DetailComment(payload)).toThrowError(
       "ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });
 
-  it("should create CommentDetail object correctly", () => {
+  it("should create DetailComment object correctly", () => {
     // Arrange
     const payload = {
       id: "comment-123",
@@ -45,14 +45,19 @@ describe("a CommentDetail entities", () => {
     };
 
     // Action
-    const { content, username } = new CommentDetail(payload);
+    const detailComment = new DetailComment(payload);
 
     // Assert
-    expect(content).toEqual(payload.content);
-    expect(username).toEqual(payload.username);
+     expect(detailComment.id).toEqual(payload.id);
+     expect(detailComment.content).toEqual(payload.content);
+     expect(detailComment.date).toEqual(payload.date);
+     expect(detailComment.username).toEqual(payload.username);
+     expect(detailComment.like_count).toEqual(payload.like_count);
+     expect(detailComment.replies).toEqual(payload.replies);
   });
 
-  it("should create CommentDetail object when comment is deleted correctly", () => {
+
+  it("should create DetailComment object when comment is deleted correctly", () => {
     // Arrange
     const payload = {
       id: "comment-123",
@@ -65,7 +70,7 @@ describe("a CommentDetail entities", () => {
     };
 
     // Action
-    const { id, content, date, username, replies } = new CommentDetail(payload);
+    const { id, content, date, username, replies } = new DetailComment(payload);
 
     // Assert
     expect(id).toEqual("comment-123");
@@ -75,7 +80,7 @@ describe("a CommentDetail entities", () => {
     expect(replies).toEqual([]);
   });
 
-  it("should create CommentDetail object when comment is not deleted correctly", () => {
+  it("should create DetailComment object when comment is not deleted correctly", () => {
     // Arrange
     const payload = {
       id: "comment-123",
@@ -88,13 +93,13 @@ describe("a CommentDetail entities", () => {
     };
 
     // Action
-    const { id, content, date, username, replies } = new CommentDetail(payload);
+    const detailComment = new DetailComment(payload);
 
     // Assert
-    expect(id).toEqual("comment-123");
-    expect(content).toEqual("dicoding");
-    expect(date).toEqual("2022-04-21T14:47:50.725+07:00");
-    expect(username).toEqual("dicoding");
-    expect(replies).toEqual([]);
+    expect(detailComment.id).toEqual("comment-123");
+    expect(detailComment.content).toEqual("dicoding");
+    expect(detailComment.date).toEqual("2022-04-21T14:47:50.725+07:00");
+    expect(detailComment.username).toEqual("dicoding");
+    expect(detailComment.replies).toEqual([]);
   });
 });

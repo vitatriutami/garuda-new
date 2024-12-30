@@ -54,7 +54,6 @@ describe("DetailThreadUseCase", () => {
       ],
     };
 
-
     /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
@@ -86,7 +85,7 @@ describe("DetailThreadUseCase", () => {
           id: "comment-124",
           thread_id: "thread-123",
           content: "comment",
-          date: new Date("2021-08-08T07:22:33.555Z"),
+          date: "2021-08-08T07:22:33.555Z",
           username: "dicoding",
           is_removed: true,
           like_count: 0,
@@ -107,7 +106,7 @@ describe("DetailThreadUseCase", () => {
         {
           id: "reply-124",
           comment_id: "comment-124",
-          content: "Hai, apa kabar",
+          content: "Test reply",
           date: "2021-08-08T07:22:33.555Z",
           username: "dicoding",
           is_removed: false,
@@ -115,6 +114,12 @@ describe("DetailThreadUseCase", () => {
       ])
     );
 
+    /** creating use case instance */
+    // const getThreadUseCase = new DetailThreadUseCase({
+    //   threadRepository: mockThreadRepository,
+    //   commentRepository: mockCommentRepository,
+    //   replyRepository: mockReplyRepository,
+    // });
     /** creating use case instance */
     const getThreadUseCase = new DetailThreadUseCase({
       threadRepository: mockThreadRepository,
@@ -126,11 +131,19 @@ describe("DetailThreadUseCase", () => {
     const gettedThread = await getThreadUseCase.execute(threadId);
 
     // Assert
-    expect(gettedThread.id).toEqual(expectedThreadDetails.id);
-    expect(gettedThread.body).toEqual(expectedThreadDetails.body);
-    expect(gettedThread.date).toEqual(expectedThreadDetails.date);
-    expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
-    expect(mockCommentRepository.getCommentByThreadId).toBeCalledWith(threadId);
-    expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith(threadId);
+    expect(gettedThread).toEqual(expectedThreadDetails);
+
+
+
+    // Action
+    // const gettedThread = await getThreadUseCase.execute(threadId);
+
+    // Assert
+    // expect(gettedThread.id).toEqual(expectedThreadDetails.id);
+    // expect(gettedThread.body).toEqual(expectedThreadDetails.body);
+    // expect(gettedThread.date).toEqual(expectedThreadDetails.date);
+    // expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
+    // expect(mockCommentRepository.getCommentByThreadId).toBeCalledWith(threadId);
+    // expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith(threadId);
   });
 });

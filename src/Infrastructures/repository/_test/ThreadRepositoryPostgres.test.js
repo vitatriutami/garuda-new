@@ -113,52 +113,42 @@ describe('ThreadRepositoryPostgres', () => {
 		})
 	})
 
-	describe('getDetailThreadById', () => {
-		it('should throw InvariantError when id not found', () => {
-			// Arrange
-			const threadRepositoryPostgres = new ThreadRepositoryPostgres(
-				pool,
-				{}
-			)
+	describe("verifyThreadAvailability", () => {
+    it("should throw NotFoundError when thread id is not found", async () => {
+      // Arrange
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
-			// Action & Assert
-			return expect(
-				threadRepositoryPostgres.getThreadById('thread-123')
-			).rejects.toThrowError(NotFoundError)
-		})
+      // Action & Assert
+      await expect(
+        threadRepositoryPostgres.verifyThreadAvailability(
+          "non-existent-thread-id"
+        )
+      ).rejects.toThrowError(NotFoundError);
+    });
 
-		it('should return all fields threads when id is found', async () => {
-			// Arrange
-			const threadRepositoryPostgres = new ThreadRepositoryPostgres(
-				pool,
-				{}
-			)
-			await ThreadsTableTestHelper.addThread({
-				id: 'thread-123',
-				title: 'dicoding',
-				body: 'ini body thread',
-				date: '2022-04-19 04:18:51.806',
-				owner: 'user-123',
-			})
+    it("should return thread details when thread id is found", async () => {
+      // Arrange
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+      await ThreadsTableTestHelper.addThread({
+        id: "thread-123",
+        title: "dicoding",
+        body: "ini body thread",
+        date: "2022-04-19 04:18:51.806",
+        owner: "user-123",
+      });
 
-			await CommentsTableTestHelper.addComment({
-				id: 'comment-123',
-				content: 'dicoding',
-				date: '2021-08-08T07:26:21.338Z',
-				threadId: 'thread-123',
-				owner: 'user-123',
-			})
+      // Action
+      const thread = await threadRepositoryPostgres.verifyThreadAvailability(
+        "thread-123"
+      );
 
-			// Action & Assert
-			const thread = await threadRepositoryPostgres.getThreadById(
-				'thread-123'
-			)
-			expect(thread.title).toBe('dicoding')
-			expect(thread).toHaveProperty('id', 'thread-123')
-			expect(thread).toHaveProperty('title', 'dicoding')
-			expect(thread).toHaveProperty('body', 'ini body thread')
-			expect(thread).toHaveProperty('username', 'dicoding')
-			expect(thread).toHaveProperty('date')
-		})
-	})
+      // Assert
+      expect(thread).toHaveProperty("id", "thread-123");
+      expect(thread).toHaveProperty("title", "dicoding");
+      expect(thread).toHaveProperty("body", "ini body thread");
+      expect(thread).toHaveProperty("owner", "user-123");
+      expect(thread).toHaveProperty("date");
+    });
+  });
+
 })

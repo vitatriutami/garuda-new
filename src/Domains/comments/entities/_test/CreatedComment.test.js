@@ -37,10 +37,9 @@ describe('CreatedComment entities', () => {
 		}
 
 		// Action
-		const { content, owner } = new CreatedComment(payload)
+		const createdComment = new CreatedComment(payload)
 
 		// Assert
-		expect(content).toEqual(payload.content)
-		expect(owner).toEqual(payload.owner)
+		expect(createdComment).toEqual(payload)
 	})
 })

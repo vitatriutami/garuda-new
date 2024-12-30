@@ -1,66 +1,66 @@
-const AddComment = require('../../../Domains/comments/entities/AddComment')
-const CreatedComment = require('../../../Domains/comments/entities/CreatedComment')
-const CommentRepository = require('../../../Domains/comments/CommentsRepository')
-const ThreadRepository = require('../../../Domains/threads/ThreadRepository')
-const AddCommentUseCase = require('../AddCommentUseCase')
+// const AddComment = require("../../../Domains/comments/entities/AddComment");
+const CreatedComment = require("../../../Domains/comments/entities/CreatedComment");
+const CommentRepository = require("../../../Domains/comments/CommentsRepository");
+const ThreadRepository = require("../../../Domains/threads/ThreadRepository");
+const AddCommentUseCase = require("../AddCommentUseCase");
 
-describe('AddCommentUseCase', () => {
-	it('should orchestrating the add comment action correctly', async () => {
-		// Arrange
-		const owner = 'user-123'
-		const threadId = 'thread-123'
-		const useCasePayload = {
-			content: 'dicoding',
-			threadId: threadId,
-			owner: owner,
-		}
+describe("AddCommentUseCase", () => {
+  it("should orchestrate the add comment action correctly", async () => {
+    // Arrange
+    const owner = "user-123";
+    const threadId = "thread-123";
+    const useCasePayload = {
+      content: "dicoding",
+    };
 
-		const expectedCreatedComment = new CreatedComment({
-			id: 'thread-123',
-			content: useCasePayload.content,
-			owner: useCasePayload.owner,
-		})
+    const expectedCreatedComment = new CreatedComment({
+      id: "comment-123",
+      content: useCasePayload.content,
+      owner: owner,
+    });
 
-		/** creating dependency of use case */
-		const mockThreadRepository = new ThreadRepository()
-		const mockCommentRepository = new CommentRepository()
+    /** creating dependency of use case */
+    const mockThreadRepository = new ThreadRepository();
+    const mockCommentRepository = new CommentRepository();
 
-		/** mocking needed function */
-		mockThreadRepository.getThreadById = jest.fn(() => Promise.resolve())
-		mockCommentRepository.addComment = jest.fn(() =>
-			Promise.resolve(
-				new CreatedComment({
-					id: 'thread-123',
-					content: useCasePayload.content,
-					owner: useCasePayload.owner,
-				})
-			)
-		)
+    /** mocking needed function */
+    mockThreadRepository.verifyThreadAvailability = jest.fn(() =>
+      Promise.resolve()
+    );
+    mockCommentRepository.addComment = jest.fn(() =>
+      Promise.resolve(
+        new CreatedComment({
+          id: "comment-123",
+          content: useCasePayload.content,
+          owner: owner,
+        })
+      )
+    );
 
-		/** creating use case instance */
-		const getCommentUseCase = new AddCommentUseCase({
-			threadRepository: mockThreadRepository,
-			commentRepository: mockCommentRepository,
-		})
+    /** creating use case instance */
+    const addCommentUseCase = new AddCommentUseCase({
+      threadRepository: mockThreadRepository,
+      commentRepository: mockCommentRepository,
+    });
 
-		// Action
-		const addedComment = await getCommentUseCase.execute(
-			useCasePayload,
-			useCasePayload.threadId,
-			useCasePayload.owner
-		)
+    // Action
+    const addedComment = await addCommentUseCase.execute(
+      useCasePayload,
+      threadId,
+      owner
+    );
 
-		// Assert
-		expect(addedComment).toStrictEqual(expectedCreatedComment)
-		expect(mockThreadRepository.getThreadById).toBeCalledWith(
-			useCasePayload.threadId
-		)
-		expect(mockCommentRepository.addComment).toBeCalledWith(
-			new AddComment({
-				content: useCasePayload.content,
-				threadId: useCasePayload.threadId,
-				owner: useCasePayload.owner,
-			})
-		)
-	})
-})
+    // Assert
+    expect(mockThreadRepository.verifyThreadAvailability).toHaveBeenCalledWith(
+      threadId
+    );
+    expect(mockCommentRepository.addComment).toHaveBeenCalledWith(
+      expect.objectContaining({
+        content: useCasePayload.content,
+        threadId: threadId,
+        owner: owner,
+      })
+    );
+    expect(addedComment).toStrictEqual(expectedCreatedComment);
+  });
+});

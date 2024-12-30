@@ -1,16 +1,18 @@
-class ReplyDetail {
+class DetailReply {
 	constructor(payload) {
 		this._verifyPayload(payload)
 
-		const { id, content, date, username, is_removed: isDelete } = payload
+		const { id, content, date, username, is_removed } = payload
 
 		this.id = id
-		this.content = isDelete ? '**balasan telah dihapus**' : content
+		this.content = is_removed ? '**balasan telah dihapus**' : content
 		this.date = date
 		this.username = username
+		this.is_removed = is_removed
+		
 	}
 
-	_verifyPayload({ id, content, date, username, is_removed: isDelete }) {
+	_verifyPayload({ id, content, date, username, is_removed }) {
 		if (!id || !content || !date || !username) {
 			throw new Error('REPLY.NOT_CONTAIN_NEEDED_PROPERTY')
 		}
@@ -19,11 +21,11 @@ class ReplyDetail {
 			typeof id !== 'string' ||
 			typeof content !== 'string' ||
 			typeof username !== 'string' ||
-			typeof isDelete !== 'boolean'
+			typeof is_removed !== 'boolean'
 		) {
 			throw new Error('REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION')
 		}
 	}
 }
 
-module.exports = ReplyDetail
+module.exports = DetailReply

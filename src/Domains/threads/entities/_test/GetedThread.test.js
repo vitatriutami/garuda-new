@@ -55,33 +55,30 @@ describe('a GetedThread entities', () => {
 	})
 
 	it('should create GetedThread object correctly', () => {
-		// Arrange
-		const payload = {
-			id: 'thread-123',
-			title: 'dicoding',
-			body: 'Dicoding-Indonesia',
-			date: '2021-08-08T07:19:09.775Z',
-			username: 'dicoding',
-		}
+    // Arrange
+    const payload = {
+      id: "thread-123",
+      title: "dicoding",
+      body: "Dicoding-Indonesia",
+      date: "2021-08-08T07:19:09.775Z",
+      username: "dicoding",
+    };
 
-		const comments = [
-			{
-				id: 'comment-123',
-				username: 'dicoding',
-				date: '2021-08-08T07:22:33.555Z',
-				content: 'sebuah comment',
-			},
-		]
+    const comments = [
+      {
+        id: "comment-123",
+        username: "dicoding",
+        date: "2021-08-08T07:22:33.555Z",
+        content: "sebuah comment",
+      },
+    ];
 
-		payload.comments = comments
+    payload.comments = comments;
 
-		// Action
-		const getedThread = new GetedThread(payload)
+    // Action
+    const getedThread = new GetedThread(payload);
 
-		// Assert
-		expect(getedThread.id).toEqual(payload.id)
-		expect(getedThread.title).toEqual(payload.title)
-		expect(getedThread.owner).toEqual(payload.owner)
-		expect(getedThread.comments.id).toEqual(payload.comments.id)
-	})
+    // Assert
+    expect(getedThread).toEqual({ ...payload });
+  })
 })

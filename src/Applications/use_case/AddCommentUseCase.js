@@ -11,7 +11,9 @@ class AddCommentUseCase {
 		useCasePayload.threadId = threadId
 
 		const addComment = new AddComment(useCasePayload)
-		await this._threadRepository.getThreadById(addComment.threadId)
+
+		await this._threadRepository.verifyThreadAvailability(addComment.threadId)
+		
 		return this._commentRepository.addComment(addComment)
 	}
 }

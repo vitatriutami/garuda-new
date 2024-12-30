@@ -30,20 +30,19 @@ describe('a DetailThread entities', () => {
 	})
 
 	it('should create DetailThread object correctly', () => {
-		// Arrange
-		const payload = {
-			id: 'thread-123',
-			title: 'dicoding',
-			body: 'Dicoding-Indonesia',
-			date: '2021-08-08T07:19:09.775Z',
-			username: 'dicoding',
-		}
+    // Arrange
+    const payload = {
+      id: "thread-123",
+      title: "dicoding",
+      body: "Dicoding-Indonesia",
+      date: "2021-08-08T07:19:09.775Z",
+      username: "dicoding",
+    };
 
-		// Action
-		const { title, body } = new DetailThread(payload)
+    // Action
+    const detailThread = new DetailThread(payload);
 
-		// Assert
-		expect(title).toEqual(payload.title)
-		expect(body).toEqual(payload.body)
-	})
+    // Assert
+    expect(detailThread).toEqual({ ...payload });
+  })
 })

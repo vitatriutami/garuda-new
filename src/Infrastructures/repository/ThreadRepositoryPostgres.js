@@ -48,6 +48,31 @@ WHERE t.id = $1;
 
     return result.rows[0];
   }
+
+  async verifyThreadAvailability(id) {
+    const query = {
+      text: `SELECT 
+    t.id, 
+    t.title, 
+    t.body, 
+    t.date, 
+    t.owner, 
+    u.username
+FROM threads AS t
+LEFT JOIN users AS u ON u.id = t.owner
+WHERE t.id = $1;
+`,
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError("ThreadId tidak ditemukan");
+    }
+
+    return result.rows[0];
+  }
 }
 
 module.exports = ThreadRepositoryPostgres;

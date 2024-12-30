@@ -1,6 +1,6 @@
-const ReplyDetail = require("../DetailReply");
+const DetailReply = require("../DetailReply");
 
-describe("ReplyDetail entities", () => {
+describe("DetailReply entities", () => {
   it("should throw error when payload did not contain needed property", () => {
     // Arrange
     const payload = {
@@ -10,7 +10,7 @@ describe("ReplyDetail entities", () => {
     };
 
     // Action and Assert
-    expect(() => new ReplyDetail(payload)).toThrowError(
+    expect(() => new DetailReply(payload)).toThrowError(
       "REPLY.NOT_CONTAIN_NEEDED_PROPERTY"
     );
   });
@@ -26,12 +26,12 @@ describe("ReplyDetail entities", () => {
     };
 
     // Action and Assert
-    expect(() => new ReplyDetail(payload)).toThrowError(
+    expect(() => new DetailReply(payload)).toThrowError(
       "REPLY.NOT_MEET_DATA_TYPE_SPECIFICATION"
     );
   });
 
-  it("should create ReplyDetail object correctly", () => {
+  it("should create DetailReply object correctly", () => {
     // Arrange
     const payload = {
       id: "reply-123",
@@ -42,15 +42,13 @@ describe("ReplyDetail entities", () => {
     };
 
     // Action
-    const { id, content, username } = new ReplyDetail(payload);
+    const detailReply = new DetailReply(payload);
 
     // Assert
-    expect(id).toEqual(payload.id);
-    expect(content).toEqual(payload.content);
-    expect(username).toEqual(payload.username);
+    expect(detailReply).toEqual(payload);
   });
 
-  it("should create ReplyDetail object when comment is deleted correctly", () => {
+  it("should create DetailReply object when comment is deleted correctly", () => {
     // Arrange
     const payload = {
       id: "reply-123",
@@ -61,16 +59,17 @@ describe("ReplyDetail entities", () => {
     };
 
     // Action
-    const { id, content, date, username } = new ReplyDetail(payload);
+    const detailReply = new DetailReply(payload);
 
     // Assert
-    expect(id).toEqual("reply-123");
-    expect(content).toEqual("**balasan telah dihapus**");
-    expect(date).toEqual("2022-04-23T07:09:31.383+07:00");
-    expect(username).toEqual("user");
+    expect(detailReply.id).toEqual("reply-123");
+    expect(detailReply.content).toEqual("**balasan telah dihapus**");
+    expect(detailReply.date).toEqual("2022-04-23T07:09:31.383+07:00");
+    expect(detailReply.username).toEqual("user");
+    expect(detailReply.is_removed).toEqual(true);
   });
 
-  it("should create ReplyDetail object when comment is not deleted correctly", () => {
+  it("should create DetailReply object when comment is not deleted correctly", () => {
     // Arrange
     const payload = {
       id: "reply-123",
@@ -81,12 +80,9 @@ describe("ReplyDetail entities", () => {
     };
 
     // Action
-    const { id, content, date, username } = new ReplyDetail(payload);
+    const detailReply = new DetailReply(payload);
 
     // Assert
-    expect(id).toEqual("reply-123");
-    expect(content).toEqual("content reply");
-    expect(date).toEqual("2022-04-23T07:09:31.383+07:00");
-    expect(username).toEqual("user");
+    expect(detailReply).toEqual(payload);
   });
 });

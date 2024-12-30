@@ -29,19 +29,17 @@ describe('CreatedThread entities', () => {
 	})
 
 	it('should create CreatedThread object correctly', () => {
-		// Arrange
-		const payload = {
-			id: 'user-123',
-			title: 'dicoding',
-			owner: 'Dicoding-Indonesia',
-		}
+    // Arrange
+    const payload = {
+      id: "user-123",
+      title: "dicoding",
+      owner: "Dicoding-Indonesia",
+    };
 
-		// Action
-		const addedThread = new CreatedThread(payload)
+    // Action
+    const addedThread = new CreatedThread(payload);
 
-		// Assert
-		expect(addedThread.id).toEqual(payload.id)
-		expect(addedThread.title).toEqual(payload.title)
-		expect(addedThread.owner).toEqual(payload.owner)
-	})
+    // Assert
+    expect(addedThread).toEqual({ ...payload });
+  })
 })
