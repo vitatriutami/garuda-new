@@ -13,8 +13,8 @@ class AddReplyUseCase {
 		useCasePayload.commentId = commentId
 
 		const addReply = new AddReply(useCasePayload)
-		await this._threadRepository.getThreadById(addReply.threadId)
-		await this._commentRepository.getCommentById(addReply.commentId)
+		await this._threadRepository.verifyThreadAvailability(addReply.threadId)
+		await this._commentRepository.verifyCommentAvailability(addReply.commentId);
 		return this._replyRepository.addReply(addReply)
 	}
 }

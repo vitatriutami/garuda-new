@@ -6,7 +6,7 @@ const CommentDetail = require("../../../Domains/comments/entities/DetailComment"
 const ReplyDetail = require("../../../Domains/replies/entities/DetailReply");
 
 describe("DetailThreadUseCase", () => {
-  it("should orchestrating the add thread action correctly", async () => {
+  it("should orchestrate the get thread action correctly", async () => {
     // Arrange
     const threadId = "thread-123";
 
@@ -115,12 +115,6 @@ describe("DetailThreadUseCase", () => {
     );
 
     /** creating use case instance */
-    // const getThreadUseCase = new DetailThreadUseCase({
-    //   threadRepository: mockThreadRepository,
-    //   commentRepository: mockCommentRepository,
-    //   replyRepository: mockReplyRepository,
-    // });
-    /** creating use case instance */
     const getThreadUseCase = new DetailThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
@@ -132,18 +126,13 @@ describe("DetailThreadUseCase", () => {
 
     // Assert
     expect(gettedThread).toEqual(expectedThreadDetails);
+    expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
+    expect(mockCommentRepository.getCommentByThreadId).toBeCalledWith(threadId);
+    expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith(threadId);
 
-
-
-    // Action
-    // const gettedThread = await getThreadUseCase.execute(threadId);
-
-    // Assert
-    // expect(gettedThread.id).toEqual(expectedThreadDetails.id);
-    // expect(gettedThread.body).toEqual(expectedThreadDetails.body);
-    // expect(gettedThread.date).toEqual(expectedThreadDetails.date);
-    // expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
-    // expect(mockCommentRepository.getCommentByThreadId).toBeCalledWith(threadId);
-    // expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith(threadId);
+    // Ensure mock functions are called the correct number of times
+    expect(mockThreadRepository.getThreadById).toBeCalledTimes(1);
+    expect(mockCommentRepository.getCommentByThreadId).toBeCalledTimes(1);
+    expect(mockReplyRepository.getRepliesByThreadId).toBeCalledTimes(1);
   });
 });

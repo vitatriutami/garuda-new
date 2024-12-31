@@ -196,4 +196,38 @@ describe("CommentRepositoryPostgres", () => {
       });
     });
   });
+
+   describe("verifyCommentAvailability function", () => {
+     it("should not throw NotFoundError when comment exists", async () => {
+       // Arrange
+       const commentId = "comment-123";
+       await pool.query(
+         `INSERT INTO comments (id, content, date, thread_id, owner) VALUES ($1, $2, $3, $4, $5)`,
+         [commentId, "content", new Date(), "thread-123", "user-123"]
+       );
+
+       const commentRepositoryPostgres = new CommentRepositoryPostgres(
+         pool,
+         {}
+       );
+
+       // Action & Assert
+       await expect(
+         commentRepositoryPostgres.verifyCommentAvailability(commentId)
+       ).resolves.not.toThrow(NotFoundError);
+     });
+
+     it("should throw NotFoundError when comment does not exist", async () => {
+       // Arrange
+       const commentRepositoryPostgres = new CommentRepositoryPostgres(
+         pool,
+         {}
+       );
+
+       // Action & Assert
+       await expect(
+         commentRepositoryPostgres.verifyCommentAvailability("nonexistent-id")
+       ).rejects.toThrow(NotFoundError);
+     });
+   });
 });

@@ -15,7 +15,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     const date = new Date();
 
     const query = {
-      text: "INSERT INTO threads VALUES($1, $2, $3, $4, $5) RETURNING id, title, owner",
+      text: "INSERT INTO threads VALUES($1, $2, $3, $4, $5) RETURNING id, title, body, date, owner",
       values: [id, title, body, date, owner],
     };
 
@@ -24,51 +24,41 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     return new CreatedThread({ ...result.rows[0] });
   }
 
-  async getThreadById(id) {
+  async getThreadById(threadId) {
     const query = {
-      text: `SELECT 
-    t.id, 
-    t.title, 
-    t.body, 
-    t.date, 
-    t.owner, 
-    u.username
-FROM threads AS t
-LEFT JOIN users AS u ON u.id = t.owner
-WHERE t.id = $1;
-`,
-      values: [id],
+      text: `
+      SELECT threads.id, threads.title, threads.body, threads.date, threads.owner, users.username
+      FROM threads
+      LEFT JOIN users ON threads.owner = users.id
+      WHERE threads.id = $1
+    `,
+      values: [threadId],
     };
 
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError("ThreadId tidak ditemukan");
+      throw new NotFoundError("Thread tidak ditemukan");
     }
 
     return result.rows[0];
   }
 
-  async verifyThreadAvailability(id) {
+  async verifyThreadAvailability(threadId) {
     const query = {
-      text: `SELECT 
-    t.id, 
-    t.title, 
-    t.body, 
-    t.date, 
-    t.owner, 
-    u.username
-FROM threads AS t
-LEFT JOIN users AS u ON u.id = t.owner
-WHERE t.id = $1;
-`,
-      values: [id],
+      text: `
+      SELECT threads.id, threads.title, threads.body, threads.date, threads.owner, users.username
+      FROM threads
+      LEFT JOIN users ON threads.owner = users.id
+      WHERE threads.id = $1
+    `,
+      values: [threadId],
     };
 
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError("ThreadId tidak ditemukan");
+      throw new NotFoundError("Thread tidak ditemukan");
     }
 
     return result.rows[0];

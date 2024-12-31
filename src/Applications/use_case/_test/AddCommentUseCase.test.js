@@ -1,4 +1,3 @@
-// const AddComment = require("../../../Domains/comments/entities/AddComment");
 const CreatedComment = require("../../../Domains/comments/entities/CreatedComment");
 const CommentRepository = require("../../../Domains/comments/CommentsRepository");
 const ThreadRepository = require("../../../Domains/threads/ThreadRepository");
@@ -13,6 +12,15 @@ describe("AddCommentUseCase", () => {
       content: "dicoding",
     };
 
+    const expectedThread = {
+      id: threadId,
+      title: "Thread title",
+      body: "Thread body",
+      date: "2021-08-08T07:19:09.775Z",
+      owner: "user-123",
+      username: "dicoding",
+    };
+
     const expectedCreatedComment = new CreatedComment({
       id: "comment-123",
       content: useCasePayload.content,
@@ -25,7 +33,7 @@ describe("AddCommentUseCase", () => {
 
     /** mocking needed function */
     mockThreadRepository.verifyThreadAvailability = jest.fn(() =>
-      Promise.resolve()
+      Promise.resolve(expectedThread)
     );
     mockCommentRepository.addComment = jest.fn(() =>
       Promise.resolve(

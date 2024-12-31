@@ -36,10 +36,11 @@ describe('a AddLike entities', () => {
 		}
 
 		// Action
-		const { commentId, credentialId } = new AddLike(payload)
+		const addLike = new AddLike(payload)
 
 		// Assert
-		expect(commentId).toEqual(payload.commentId)
-		expect(credentialId).toEqual(payload.credentialId)
+		expect(addLike.threadId).toEqual(payload.threadId);
+		expect(addLike.commentId).toEqual(payload.commentId)
+		expect(addLike.credentialId).toEqual(payload.credentialId)
 	})
 })
